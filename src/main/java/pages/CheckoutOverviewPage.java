@@ -8,7 +8,7 @@ import base.BasePage;
 
 public class CheckoutOverviewPage extends BasePage
 {
-	private By finishButton = By.id("finish");
+	private By finishButton = By.xpath("//button[text()='Finish']");
 
 	public CheckoutOverviewPage(WebDriver driver)
 	{

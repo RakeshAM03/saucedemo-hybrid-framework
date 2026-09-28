@@ -10,13 +10,13 @@ import base.BasePage;
 
 public class CheckoutInfoPage extends BasePage
 {
-	private By firstNameField = By.id("first-name");
+	private By firstNameField = By.cssSelector("#first-name");
 
-	private By lastNameField = By.id("last-name");
+	private By lastNameField = By.cssSelector("input[placeholder*='Last']");
 
-	private By postalCodeField = By.id("postal-code");
+	private By postalCodeField = By.xpath("//input[contains(@placeholder,'Postal')]");
 
-	private By continueButton = By.id("continue");
+	private By continueButton = By.xpath("//input[@type='submit' and normalize-space(@value)='Continue']");
 
 	public CheckoutInfoPage(WebDriver driver)
 	{

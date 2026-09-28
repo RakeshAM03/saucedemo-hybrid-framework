@@ -37,8 +37,6 @@ saucedemo-hybrid-framework/
 │   └── config.properties              # Environment, browser, waits & screenshot settings
 ├── testdata/
 │   └── testdata.xlsx                  # Sheets: validlogin, lockedlogin, checkout
-├── tools/
-│   └── TestDataGenerator.java         # One-time generator for testdata.xlsx (not compiled by Maven)
 ├── xmlfiles/
 │   └── testng.xml                     # TestNG suite: listeners + test classes
 ├── src/
@@ -110,7 +108,6 @@ All runtime behavior is controlled from `config/config.properties`. **Any key ca
 | `screenshot_on_failure` | Screenshot on test failure | `true` |
 | `screenshot_on_success` | Screenshot on test pass | `false` |
 | `screenshot_on_skip` | Screenshot on skip | `false` |
-| `retry` | Retry count (reserved) | `0` |
 
 ### Test Data
 
@@ -122,12 +119,19 @@ All runtime behavior is controlled from `config/config.properties`. **Any key ca
 | `lockedlogin` | username, password, expectedError | `LoginTest.lockedOutUserTest` |
 | `checkout` | firstName, lastName, postalCode | `CheckoutTest.completeCheckoutTest` |
 
-To rebuild the file:
+### Locator Strategy
 
-```bash
-mvn -q dependency:build-classpath -Dmdep.outputFile=target/cp.txt
-java -cp "$(cat target/cp.txt)" tools/TestDataGenerator.java
-```
+Locators live only in the page classes and use XPath and CSS functions rather than bare ids:
+
+| Technique | Example |
+|-----------|---------|
+| XPath `contains()` | `//input[contains(@placeholder,'Postal')]` |
+| XPath `starts-with()` + `normalize-space()` | `//button[starts-with(@id,'add-to-cart') and normalize-space()='Add to cart']` |
+| XPath `text()` | `//button[text()='Finish']` |
+| CSS id / class | `input#user-name`, `a.shopping_cart_link` |
+| CSS starts-with `^=` / contains `*=` | `select[data-test^='product-sort']`, `span[class*='cart_badge']` |
+
+CSS has no text function, so every text-based locator is written in XPath.
 
 ---
 

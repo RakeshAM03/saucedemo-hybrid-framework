@@ -14,19 +14,17 @@ import base.BasePage;
 
 public class ProductsPage extends BasePage
 {
-	private By pageTitle = By.cssSelector(".title");
+	private By pageTitle = By.cssSelector("span.title");
 
-	private By cartBadge = By.cssSelector(".shopping_cart_badge");
+	private By cartBadge = By.cssSelector("span[class*='cart_badge']");
 
-	private By cartLink = By.cssSelector(".shopping_cart_link");
+	private By cartLink = By.cssSelector("a.shopping_cart_link");
 
-	private By sortDropdown = By.cssSelector(".product_sort_container");
+	private By sortDropdown = By.cssSelector("select[data-test^='product-sort']");
 
-	private By productNames = By.cssSelector(".inventory_item_name");
+	private By productPrices = By.xpath("//div[contains(@class,'inventory_item_price')]");
 
-	private By productPrices = By.cssSelector(".inventory_item_price");
-
-	private By addToCartButtons = By.cssSelector("button[id^='add-to-cart']");
+	private By addToCartButtons = By.xpath("//button[starts-with(@id,'add-to-cart') and normalize-space()='Add to cart']");
 
 	public ProductsPage(WebDriver driver)
 	{
@@ -105,13 +103,6 @@ public class ProductsPage extends BasePage
 		List<Double> prices = getAllPrices();
 
 		return prices.get(0);
-	}
-
-	public List<String> getAllProductNames()
-	{
-		List<String> names = getAllTexts(productNames);
-
-		return names;
 	}
 
 	public CartPage openCart()

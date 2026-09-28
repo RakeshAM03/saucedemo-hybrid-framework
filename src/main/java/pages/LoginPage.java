@@ -8,13 +8,13 @@ import base.BasePage;
 
 public class LoginPage extends BasePage
 {
-	private By usernameField = By.id("user-name");
+	private By usernameField = By.cssSelector("input#user-name");
 
-	private By passwordField = By.id("password");
+	private By passwordField = By.cssSelector("input[placeholder^='Pass']");
 
-	private By loginButton = By.id("login-button");
+	private By loginButton = By.xpath("//input[@type='submit' and normalize-space(@value)='Login']");
 
-	private By errorMessage = By.cssSelector("[data-test='error']");
+	private By errorMessage = By.xpath("//h3[starts-with(normalize-space(.),'Epic sadface')]");
 
 	public LoginPage(WebDriver driver)
 	{

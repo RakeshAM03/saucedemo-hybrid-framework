@@ -8,7 +8,7 @@ import base.BasePage;
 
 public class CheckoutCompletePage extends BasePage
 {
-	private By confirmationHeader = By.cssSelector(".complete-header");
+	private By confirmationHeader = By.cssSelector("h2.complete-header");
 
 	public CheckoutCompletePage(WebDriver driver)
 	{

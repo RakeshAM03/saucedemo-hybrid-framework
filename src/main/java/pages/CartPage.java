@@ -14,9 +14,9 @@ import base.BasePage;
 
 public class CartPage extends BasePage
 {
-	private By cartItems = By.cssSelector(".cart_item");
+	private By cartItems = By.cssSelector("div.cart_item");
 
-	private By checkoutButton = By.id("checkout");
+	private By checkoutButton = By.xpath("//button[normalize-space(text())='Checkout']");
 
 	public CartPage(WebDriver driver)
 	{
