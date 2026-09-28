@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	pom.xml = "Project Object Model".
+	This is the heart of every Maven project. It tells Maven:
+	  1. What this project is called (groupId / artifactId / version)
+	  2. Which libraries (dependencies) to download from Maven Central
+	  3. Which Java version to compile with
+	  4. Which plugins to use when we run "mvn test" (Surefire runs TestNG)
+-->
+<!-- Root tag. The xmlns attributes point to the official Maven 4.0.0 schema so IDEs can validate this file -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<!-- Version of the POM format itself. Always 4.0.0 for Maven 2/3 -->
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- groupId = the "company / organisation" name of the project (like a Java package prefix) -->
+	<groupId>saucedemo</groupId>
+
+	<!-- artifactId = the name of this project. Must match the project folder name for clarity -->
+	<artifactId>saucedemo-hybrid-framework</artifactId>
+
+	<!-- version of our project. SNAPSHOT means "still under development" -->
+	<version>0.0.1-SNAPSHOT</version>
+
+	<!-- properties = variables that we can reuse anywhere in this pom with ${name} -->
+	<properties>
+
+		<!-- Compile the code for Java 21. "release" sets both source and target and also checks we only use Java 21 APIs -->
+		<maven.compiler.release>21</maven.compiler.release>
+
+		<!-- Read and write all source files as UTF-8, so special characters do not break and Maven does not warn us -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- Default suite file name. "mvn clean test" will use testng.xml; "-Dsuitefile=other.xml" overrides it -->
+		<suitefile>testng.xml</suitefile>
+
+		<!-- One place to change the Selenium version -->
+		<selenium.version>4.49.0</selenium.version>
+
+		<!-- One place to change the TestNG version -->
+		<testng.version>7.12.0</testng.version>
+
+		<!-- One place to change the Apache POI version (poi and poi-ooxml must always match) -->
+		<poi.version>5.5.1</poi.version>
+
+		<!-- One place to change the ChainTest report version -->
+		<chaintest.version>1.0.12</chaintest.version>
+
+	</properties>
+
+	<!-- dependencies = external libraries Maven downloads and puts on our classpath -->
+	<dependencies>
+
+		<!-- Selenium Java: the browser automation library (WebDriver, By, WebElement, waits).
+		     Selenium 4.6+ includes Selenium Manager, which downloads the browser driver automatically -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>${selenium.version}</version>
+		</dependency>
+
+		<!-- ChainTest for TestNG: builds the HTML report (reports/chaintest/Index.html) and lets us embed screenshots -->
+		<dependency>
+			<groupId>com.aventstack</groupId>
+			<artifactId>chaintest-testng</artifactId>
+			<version>${chaintest.version}</version>
+		</dependency>
+
+		<!-- TestNG: the test runner. Gives us @Test, @BeforeMethod, @DataProvider, Assert and listeners.
+		     No <scope>test</scope> because BaseClass, DataProviders and listeners live in src/main/java and need TestNG too -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng.version}</version>
+		</dependency>
+
+		<!-- Apache POI core: the base classes for reading Microsoft Office files -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
+
+		<!-- Apache POI OOXML: adds support for the newer .xlsx format (XSSFWorkbook) used by testdata.xlsx -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
+
+	</dependencies>
+
+	<!-- build = how Maven compiles and runs the project -->
+	<build>
+
+		<!-- plugins = tools Maven runs during the build lifecycle -->
+		<plugins>
+
+			<!-- Compiler plugin: compiles our .java files into .class files, using the Java release set above -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.16.0</version>
+			</plugin>
+
+			<!-- Surefire plugin: runs during "mvn test" and hands our TestNG suite XML to TestNG.
+			     Pinned to 3.5.6 on purpose: 3.6.0 runs TestNG through the JUnit Platform engine,
+			     which IGNORES suiteXmlFiles (testng.xml), so our listeners and ChainTest report never run -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.5.6</version>
+
+				<!-- configuration = settings for this plugin -->
+				<configuration>
+
+					<!-- List of TestNG suite files to run -->
+					<suiteXmlFiles>
+
+						<!-- Run xmlfiles/<suitefile>. ${suitefile} defaults to testng.xml, or comes from -Dsuitefile=... -->
+						<suiteXmlFile>xmlfiles/${suitefile}</suiteXmlFile>
+
+					</suiteXmlFiles>
+
+				</configuration>
+			</plugin>
+
+		</plugins>
+
+	</build>
+
+</project>

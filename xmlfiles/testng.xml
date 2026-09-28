@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	testng.xml = the TestNG "suite" file.
+	It tells TestNG WHICH listeners to attach and WHICH test classes to run.
+	Maven Surefire hands this file to TestNG (pom.xml: xmlfiles/${suitefile}).
+-->
+<!-- DOCTYPE points to TestNG's DTD, so IDEs can validate the tags below -->
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<!-- suite = the whole run. name appears in reports.
+     To run in parallel later: add parallel="methods" thread-count="3" (ThreadLocal driver already supports it) -->
+<suite name="SauceDemo Suite">
+
+	<!-- listeners = classes TestNG notifies about test events -->
+	<listeners>
+
+		<!-- ChainTest's listener: collects results and writes reports/chaintest/Index.html -->
+		<listener class-name="com.aventstack.chaintest.plugins.ChainTestListener"></listener>
+
+		<!-- Our listener: logs start/pass/fail/skip and embeds screenshots -->
+		<listener class-name="listeners.ReportListener"></listener>
+
+	</listeners>
+
+	<!-- test = a group of classes run together. name appears in reports -->
+	<test name="SauceDemo Regression">
+
+		<!-- classes = the test classes to run, by fully qualified name (package.ClassName) -->
+		<classes>
+
+			<!-- Valid and locked-out login scenarios -->
+			<class name="testcases.LoginTest"/>
+
+			<!-- Add-to-cart badge scenario -->
+			<class name="testcases.CartTest"/>
+
+			<!-- Full purchase scenario -->
+			<class name="testcases.CheckoutTest"/>
+
+			<!-- Price low-to-high sort scenario -->
+			<class name="testcases.SortTest"/>
+
+		</classes>
+
+	</test>
+
+</suite>

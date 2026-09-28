@@ -1,0 +1,28 @@
+# Files and folders Git should NOT track (generated output and personal IDE settings)
+
+# Maven build output (compiled classes, surefire reports)
+target/
+
+# TestNG default HTML/XML reports
+test-output/
+
+# ChainTest HTML reports (regenerated on every run)
+reports/
+
+# Screenshots captured during runs
+screenshots/
+
+# Eclipse project files
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA project files
+.idea/
+*.iml
+
+# VS Code settings
+.vscode/
+
+# macOS Finder metadata
+.DS_Store
