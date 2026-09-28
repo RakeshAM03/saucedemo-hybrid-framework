@@ -2,11 +2,19 @@
 # The ChainTest report and any failure screenshots are uploaded as a build artifact.
 name: UI Tests
 
-# When to run: every push, every pull request, and manually from the Actions tab
+# When to run: every push, every pull request, manually from the Actions tab,
+# and on a schedule four times a day
 on:
   push:
   pull_request:
   workflow_dispatch:
+  schedule:
+    # GitHub cron is always UTC. IST = UTC + 5:30, so minute 30 of hours 0, 6, 12, 18 UTC is:
+    #   00:30 UTC = 6:00 AM IST
+    #   06:30 UTC = 12:00 PM IST
+    #   12:30 UTC = 6:00 PM IST
+    #   18:30 UTC = 12:00 AM IST (midnight)
+    - cron: '30 0,6,12,18 * * *'
 
 jobs:
   test:

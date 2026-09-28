@@ -213,3 +213,7 @@ mvn -B clean test -Dsuitefile=testng.xml -Dheadless=true -Dbrowser=chrome
 ```
 
 The ChainTest report and screenshots are attached to each run as the **chaintest-report** artifact (Actions tab → run → Artifacts).
+
+### Scheduled runs
+
+The suite also runs automatically **four times a day: 6:00 AM, 12:00 PM, 6:00 PM and 12:00 AM IST** (cron `30 0,6,12,18 * * *` in UTC). GitHub may start scheduled runs a few minutes late when its runners are busy.
